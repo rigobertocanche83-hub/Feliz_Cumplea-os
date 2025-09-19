@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Feliz Cumpleaños!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            color: #FFD700;
+        }
+        
+        .birthday-guy {
+            font-size: 4rem;
+            margin: 15px 0;
+            animation: bounce 2s infinite;
+        }
+        
+        .message {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .photo-album {
+            display: flex;
+            overflow-x: auto;
+            gap: 15px;
+            padding: 15px 0;
+            margin-bottom: 25px;
+            scrollbar-width: thin;
+        }
+        
+        .photo-album::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .photo-album::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+        
+        .photo {
+            min-width: 200px;
+            height: 150px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            flex-shrink: 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s;
+        }
+        
+        .photo:hover {
+            transform: scale(1.05);
+        }
+        
+        .photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        button {
+            background: linear-gradient(to right, #FFD700, #FFA500);
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            color: #333;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin: 15px 0;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hidden-message {
+            display: none;
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255, 215, 0, 0.2);
+            border-radius: 15px;
+            animation: fadeIn 1.5s;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.7;
+            animation: float 6s infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+        
+        footer {
+            margin-top: 30px;
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+        
+        .music-controls {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .music-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .music-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .birthday-date {
+            font-size: 1.5rem;
+            margin: 10px 0;
+            color: #FFD700;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts" id="hearts"></div>
+    
+    <!-- Reproductor de audio (oculto) -->
+    <audio id="backgroundMusic" loop>
+        <source src="musica.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+    
+    <div class="container">
+        <h1>¡🌼FELIZ CUMPLEAÑOS🌼!</h1>
+        
+        <div class="birthday-date">19 de Septiembre</div>
+        
+        <div class="birthday-guy">💐 MI CAPARRITA 💐</div>
+        
+        <div class="message">
+            <p>🎀Mi Amor Eterno🎀</p>
+            <p>🎈Mi vida, en este día tan mágico y especial, quería sorprenderte con un pequeño detalle, hecho con todo el amor que siento por ti. Eres la persona más increíble que existe en mi universo, ¡y cada instante a tu lado es un regalo invaluable!🎈</p>
+            <p>🥺Mi amor, deseo con todo mi corazón que este nuevo año te llene de tanta felicidad como la que tú me regalas a mí día tras día. ¡Te amo más de lo que las palabras jamás podrán expresar!🥺 En este día tan importante, quiero desearte lo mejor de lo mejor y que te diviertas al máximo con todas las personitas que te aman. Espero que este año sea diferente a todos los anteriores, ¡y que por fin encuentres la felicidad que tanto mereces!
+Aprovecho para recordarte lo mucho que te amo, mi niña bonita. Eres lo más importante que tengo en mi vida. Desde que te conocí, cada día se siente como un sueño hecho realidad. Estar a tu lado, compartir cada momento contigo, me hace inmensamente feliz. ¡GRACIAS, mi amor, por permitirme ser tu pareja y compartir esta hermosa aventura contigo!</p>
+            <p>💐Con todo mi amor💐</p>
+            <p><strong>Fernely💌</strong></p>
+        </div>
+        
+        <h2>Mejores momentos a tu lado</h2>
+        <div class="photo-album">
+            <div class="photo">
+                <img src="Ramo.jpg" alt="Momento especial 1" onerror="this.src='https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'">
+            </div>
+            <div class="photo">
+                <img src="Playa.jpg" alt="Momento especial 2" onerror="this.src='https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'">
+            </div>
+            <div class="photo">
+                <img src="Boda.jpg" alt="Momento especial 3" onerror="this.src='https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'">
+            </div>
+            <div class="photo">
+                <img src="Espita.jpg" alt="Momento especial 4" onerror="this.src='https://images.unsplash.com/photo-1464822759849-e0e100921dae?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'">
+            </div>
+            <div class="photo">
+                <img src="Temozon.jpg" alt="Momento especial 5" onerror="this.src='https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'">
+            </div>
+            <div class="photo">
+                <img src="Casa.jpg" alt="Momento especial 6" onerror="this.src='https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'">
+            </div>
+        </div>
+        
+        <!-- Controles de música -->
+        <div class="music-controls">
+            <button class="music-btn" onclick="playMusic()">▶️ Reproducir Música</button>
+            <button class="music-btn" onclick="pauseMusic()">⏸️ Pausar Música</button>
+        </div>
+        
+        <button onclick="showSpecialMessage()">¿Quieres saber cual es tu regalo?
+Si tu respuesta fue si toca este boton.</button>
+        
+        <div class="hidden-message" id="specialMessage">
+            <h3>¡Tu regalo será!</h3>
+            <p>¡¡Heeeeee!!, Tienes muchas ganas de saber qué es 😏gg.</p>
+            <p>Pues aún te quedarás con las ganas hasta la tarde. Así que preparé que lo recibirás hoy en la tarde.</p>
+            <p>🌷¡Te amo!🌷</p>
+        </div>
+        
+        </div>
+    
+    <footer>
+        Creado con todo mi ❤️ - Para el amor de mi vida
+    </footer>
+
+    <script>
+        // Crear corazones flotantes
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            const heartSymbols =  ['🌷', '💐', '🫀', '🪷', '🌼', '🌸'];
+            
+            for (let i = 0; i < 25; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.textContent = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 4 + 3) + 's';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heartsContainer.appendChild(heart);
+            }
+        }
+        
+        // Mostrar mensaje especial
+        function showSpecialMessage() {
+            const message = document.getElementById('specialMessage');
+            message.style.display = 'block';
+            
+            // Efecto de confeti
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('heart');
+                    confetti.textContent = '🎉';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+                    confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                    document.getElementById('hearts').appendChild(confetti);
+                    
+                    // Eliminar el confeti después de animación
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }, i * 100);
+            }
+        }
+        
+        // Control de música
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        
+        function playMusic() {
+            backgroundMusic.play();
+        }
+        
+        function pauseMusic() {
+            backgroundMusic.pause();
+        }
+        
+        // Inicializar
+        createHearts();
+    </script>
+</body>
+</html>
